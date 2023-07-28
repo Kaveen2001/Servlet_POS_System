@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Servlet Web Application</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<section class="container-fluid p-4 bg-primary text-white">
+    <h1 class="fw-bold text-lg-center">Customer Information Details</h1>
+</section>
+
+<section class="container-fluid mt-3">
+    <div class="row mt-3">
+        <div class="col-5">
+            <form id="customerForm"> <!--Request for GET Method-->
+                <div class="mb-3">
+                    <label for="cusID">Customer ID</label>
+                    <input type="text" class="form-control" id="cusID" name="customerID" placeholder="Customer ID">
+                </div>
+                <div class="mb-3">
+                    <label for="cusName">Customer Name</label>
+                    <input type="text" class="form-control" id="cusName" name="customerName" placeholder="Customer Name">
+                </div>
+                <div class="mb-3">
+                    <label for="cusAddress">Customer Address</label>
+                    <input type="text" class="form-control" id="cusAddress" name="customerAddress" placeholder="Customer Address">
+                </div>
+                <div class="mb-3">
+                    <label for="cusSalary">Customer Salary</label>
+                    <input type="text" class="form-control" id="cusSalary" name="customerSalary" placeholder="Customer Salary">
+                </div>
+                <div class="mb-3">
+                    <button type="button" id="btnSaveCustomer" class="btn btn-success">Save</button>
+                    <button type="button" id="btnUpdateCustomer" class="btn btn-warning">Update</button>
+                    <button type="button" id="btnDeleteCustomer" class="btn btn-danger">Delete</button>
+                    <button type="button" id="btnGetAllCustomer" class="btn btn-primary">Get All Customers</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-danger text-white">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Address</th>
+                    <th>Customer Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomerJson">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+    <script src="assets/jQuery/jquery-3.6.4.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+
+        // Save Customer
+        $('#btnSaveCustomer').click(function () {
+            let serializeData = $('#customerForm').serialize(); // return Query String of form with name:type-value
+            console.log(serializeData);
+
+            $.ajax({
+                url:"http://localhost:8080/Backend/customer",
+                method:"POST",
+                data:serializeData, // If we send data with the request
+                success:function (resp) {
+                    confirm("Do you want Add this Customer ?");
+                    alert(resp);
+                    loadAllCustomers();
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // Update Customer
+        $('#btnUpdateCustomer').click(function () {
+            let formData = $('#customerForm').serialize(); // return Query String of form with name:type-value
+            console.log(formData);
+
+            $.ajax({
+                url:"http://localhost:8080/Backend/customer?"+formData,
+                method:"PUT",
+                success:function (resp) {
+                    confirm("Do you want Update this Customer ?");
+                    alert(resp);
+                    loadAllCustomers();
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // Delete Customer
+        $('#btnDeleteCustomer').click(function () {
+            // Get the Customer ID
+            let customerID = $('#cusID').val();
+
+            // Initialize the Request
+            $.ajax({
+                url:"http://localhost:8080/Backend/customer?CusID="+customerID, // viva Query String Format
+                method:"DELETE",
+                success:function (resp) {
+                    confirm("Do you want Delete this Customer ?");
+                    alert(resp);
+                    loadAllCustomers();
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // Get All Customers
+        $('#btnGetAllCustomer').click(function () {
+            loadAllCustomers();
+        });
+
+        function loadAllCustomers() {
+            $('#tblCustomerJson').empty();
+            $.ajax({
+                url:"http://localhost:8080/Backend/customer",
+                method:"GET",
+                dataType:"json", // Please convert the response into JSON Format
+                success:function (resp) {
+                    console.log(resp);
+                    for (const customer of resp) {
+                        let row = `<tr><td>${customer.id}</td>,<td>${customer.name}</td>,<td>${customer.address}</td>,<td>${customer.salary}</td></tr>`;
+                        $('#tblCustomerJson').append(row);
+                    }
+                    bindClickEvents();
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        loadAllCustomers();
+
+        // Bind Click Events to the table rows
+        function bindClickEvents() {
+            $('#tblCustomerJson>tr').click(function () {
+
+                // Get values from the select row
+                let id = $(this).children().eq(0).text();
+                let name = $(this).children().eq(1).text();
+                let address = $(this).children().eq(2).text();
+                let salary = $(this).children().eq(3).text();
+
+                // Set values to the text-fields
+                $('#cusID').val(id);
+                $('#cusName').val(name);
+                $('#cusAddress').val(address);
+                $('#cusSalary').val(salary);
+            });
+        }
+
+    </script>
+</body>
+</html>

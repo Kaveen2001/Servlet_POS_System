@@ -1,0 +1,36 @@
+<customers>
+    <customer>
+        <id>C001</id>
+        <name>Kaveen</name>
+        <address>Kottawa</address>
+        <salary>50000.00</salary>
+    </customer>
+
+    <customer>
+        <id>C002</id>
+        <name>Malindu</name>
+        <address>Mathugama</address>
+        <salary>25000.00</salary>
+    </customer>
+
+    <customer>
+        <id>C003</id>
+        <name>Umesh</name>
+        <address>Kurunagala</address>
+        <salary>75000.00</salary>
+    </customer>
+
+    <customer>
+        <id>C004</id>
+        <name>Sanul</name>
+        <address>Matara</address>
+        <salary>100000.00</salary>
+    </customer>
+
+    <customer>
+        <id>C005</id>
+        <name>Ishan</name>
+        <address>Badulla</address>
+        <salary>45000.00</salary>
+    </customer>
+</customers>

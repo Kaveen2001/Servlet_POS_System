@@ -1,0 +1,25 @@
+[{
+  "id": "C001",
+  "name": "Kaveen",
+  "address": "Kottawa",
+  "salary": 50000.00
+},
+  {
+    "id": "C002",
+    "name": "Malindu",
+    "address": "Mathugama",
+    "salary": 25000.00
+  },
+  {
+    "id": "C003",
+    "name": "Sanul",
+    "address": "Matara",
+    "salary": 75000.00
+  },
+  {
+    "id": "C004",
+    "name": "Ishan",
+    "address": "Badulla",
+    "salary": 100000.00
+  }
+]
